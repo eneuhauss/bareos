@@ -1,0 +1,45 @@
+######################################################################
+#
+#  !!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#  Edit only tray-monitor.pro.in  -- tray-monitor.pro is built by the ./configure program
+#
+#  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+CONFIG += qt
+CONFIG -= debug_and_release
+CONFIG( debug, debug|release )  {
+   CONFIG -= release
+} else {
+   CONFIG -= debug
+   CONFIG += release
+}
+
+LIBS        += -L../../lib -lbareoscfg -lbareos -L../../findlib -lbareosfind @OPENSSL_LIBS@
+
+bins.path = /$(DESTDIR)@sbindir@
+bins.files = bareos-tray-monitor
+confs.path = /$(DESTDIR)@sysconfdir@
+confs.commands = ./install_conf_file
+
+TEMPLATE     = app
+TARGET       = bareos-tray-monitor
+DEPENDPATH  += .
+INCLUDEPATH += ../.. ../../include .
+
+LIBTOOL_LINK = @QMAKE_LIBTOOL@ --silent --tag=CXX --mode=link
+LIBTOOL_INSTALL = @QMAKE_LIBTOOL@ --silent --mode=install
+QMAKE_LINK   = $${LIBTOOL_LINK} $(CXX)
+QMAKE_INSTALL_PROGRAM = $${LIBTOOL_INSTALL} install -m @SBINPERM@ -p
+QMAKE_CLEAN += .libs/* bareos-tray-monitor release/bareos-tray-monitor
+
+RESOURCES    = ../main.qrc
+MOC_DIR      = moc
+OBJECTS_DIR  = obj
+UI_DIR       = ui
+
+# Main directory
+HEADERS += tray_conf.h  tray-monitor.h  tray-ui.h
+SOURCES += authenticate.cpp  tray_conf.cpp  tray-monitor.cpp
+
+FORMS += ../run/run.ui
