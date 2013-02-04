@@ -2,9 +2,9 @@
    BAREOS® - Backup Archiving REcovery Open Sourced
 
    Copyright (C) 1981-2010 Free Software Foundation Europe e.V.
+             Yes, that is 1981 no error.
    Copyright (C) 2011-2012 Planets Communications B.V.
    Copyright (C) 2013-2013 Bareos GmbH & Co. KG
-             Yes, that is 1981 no error.
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -47,12 +47,15 @@
 #include <signal.h>
 #include <string.h>
 #include <ctype.h>
+#define HAVE_CONIO 1
 #else
 
 /* We are in Bareos */
 #include "bareos.h"
 
 #endif
+
+#ifdef HAVE_CONIO
 
 #include <curses.h>
 #include <term.h>
@@ -62,8 +65,10 @@
 extern "C" int tgetent(void *, const char *);
 extern "C" int tgetnum(const char *);
 extern "C" char *tgetstr (const char*, char**);
-#endif
+# Note: the following on older (Solaris 10) systems
+#  may need to be moved to after the #endif
 extern "C" char *tgoto (const char *, int, int);
+#endif
 #elif defined(__sgi)
 extern "C" int tgetent(char *, char *);
 extern "C" int tgetnum(char id[2]);
@@ -1182,3 +1187,5 @@ static void asdell()
 {
    t_send(t_dl);
 }
+
+#endif

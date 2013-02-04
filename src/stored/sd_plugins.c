@@ -317,6 +317,11 @@ void unload_sd_plugins(void)
    sd_plugin_list = NULL;
 }
 
+int list_sd_plugins(POOL_MEM &msg)
+{
+   return list_plugins(sd_plugin_list, msg);
+}
+
 /**
  * Check if a plugin is compatible.  Called by the load_plugin function
  *  to allow us to verify the plugin.

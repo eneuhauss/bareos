@@ -23,7 +23,7 @@ dummy:
 
 GETTEXT_LIBS = @LIBINTL@
 
-TOOLS = bsmtp drivetype fstype bregex bwild bpluginfo bscrypto
+TOOLS = bsmtp drivetype fstype bregex bwild bpluginfo bscrypto timelimit
 INSTOOLS = bsmtp bwild bregex bpluginfo bscrypto
 
 INCLUDES += -I$(srcdir) -I$(basedir) -I$(basedir)/include
@@ -75,6 +75,12 @@ bpluginfo.o: bpluginfo.c
 
 bpluginfo: Makefile bpluginfo.o ../lib/libbareos$(DEFAULT_ARCHIVE_TYPE)
 	$(LIBTOOL_LINK) $(CXX) $(LDFLAGS) -L../lib -o $@ bpluginfo.o -lbareos $(GETTEXT_LIBS)
+
+timelimit.o: timelimit.c
+	${CC} ${DEFS} ${DEBUG} -DHAVE_ERRNO_H -DHAVE_SETITIMER -DHAVE_SIGACTION -c timelimit.c
+
+timelimit: timelimit.o
+	$(LIBTOOL) --silent --mode=link $(CC) $(LDFLAGS) -o $@ timelimit.o
 
 Makefile: $(srcdir)/Makefile.in $(topdir)/config.status
 	cd $(topdir) \

@@ -101,7 +101,7 @@ bool job_cmd(JCR *jcr)
    jcr->rerunning = (rerunning) ? true : false;
    jcr->setJobProtocol(protocol);
 
-   Dmsg4(100, "==== rerunning=%d VolSesId=%d VolSesTime=%d Protocol=%d\n",
+   Dmsg4(100, "rerunning=%d VolSesId=%d VolSesTime=%d Protocol=%d\n",
          jcr->rerunning, jcr->VolSessionId, jcr->VolSessionTime, jcr->getJobProtocol());
    /*
     * Since this job could be rescheduled, we

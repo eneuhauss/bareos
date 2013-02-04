@@ -175,6 +175,7 @@ void remove_read_volume(JCR *jcr, const char *VolumeName)
       free_vol_item(fvol);
    }
    unlock_read_volumes();
+// pthread_cond_broadcast(&wait_next_vol);
 }
 
 /*
@@ -412,7 +413,7 @@ VOLRES *reserve_volume(DCR *dcr, const char *VolumeName)
 
       /*
        * Check if we are trying to use the Volume on a different drive
-       *  dev      is our device
+       *  dev is our device
        *  vol->dev is where the Volume we want is
        */
       if (dev != vol->dev) {
@@ -420,7 +421,7 @@ VOLRES *reserve_volume(DCR *dcr, const char *VolumeName)
          if (!vol->dev->is_busy() && !vol->is_swapping()) {
             int32_t slot;
             Dmsg3(dbglvl, "==== Swap vol=%s from dev=%s to %s\n",
-               VolumeName, vol->dev->print_name(), dev->print_name());
+                  VolumeName, vol->dev->print_name(), dev->print_name());
             free_volume(dev);            /* free any volume attached to our drive */
             Dmsg1(50, "set_unload dev=%s\n", dev->print_name());
             dev->set_unload();           /* Unload any volume that is on our drive */
@@ -436,15 +437,19 @@ VOLRES *reserve_volume(DCR *dcr, const char *VolumeName)
             vol->dev = dev;              /* point the Volume at our drive */
             dev->vol = vol;              /* point our drive at the Volume */
          } else {
-            Dmsg5(dbglvl, "==== Swap not possible Vol busy=%d swap=%d vol=%s from dev=%s to %s\n",
-               vol->dev->is_busy(), vol->is_swapping(),
-               VolumeName, vol->dev->print_name(), dev->print_name());
+            Jmsg7(dcr->jcr, M_WARNING, 0,
+                  "Need volume from other drive, but swap not possible. "
+                  "Status: read=%d num_writers=%d num_reserve=%d swap=%d "
+                  "vol=%s from dev=%s to %s\n",
+                  vol->dev->can_read(), vol->dev->num_writers,
+                  vol->dev->num_reserved(), vol->is_swapping(),
+                  VolumeName, vol->dev->print_name(), dev->print_name());
             if (vol->is_swapping() && dev->swap_dev) {
                Dmsg3(dbglvl, "Swap failed vol=%s from=%s to dev=%s\n",
-                 vol->vol_name, dev->swap_dev->print_name(), dev->print_name());
+                     vol->vol_name, dev->swap_dev->print_name(), dev->print_name());
             } else {
                Dmsg3(dbglvl, "Swap failed vol=%s from=%p to dev=%s\n",
-                  vol->vol_name, dev->swap_dev, dev->print_name());
+                     vol->vol_name, dev->swap_dev, dev->print_name());
             }
             debug_list_volumes("failed swap");
             vol = NULL;                  /* device busy */
@@ -594,6 +599,7 @@ bool free_volume(DEVICE *dev)
       Dmsg1(dbglvl, "=== cannot clear swapping vol=%s\n", vol->vol_name);
    }
    unlock_volumes();
+// pthread_cond_broadcast(&wait_next_vol);
    return true;
 }
 
