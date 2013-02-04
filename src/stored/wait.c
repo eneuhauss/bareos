@@ -52,7 +52,7 @@ int wait_for_sysop(DCR *dcr)
    DEVICE *dev = dcr->dev;
    JCR *jcr = dcr->jcr;
 
-   dev->dlock();
+   dev->Lock();
    Dmsg1(dbglvl, "Enter blocked=%s\n", dev->print_blocked());
 
    /*
@@ -199,7 +199,7 @@ int wait_for_sysop(DCR *dcr)
       Dmsg1(dbglvl, "set %s\n", dev->print_blocked());
    }
    Dmsg1(dbglvl, "Exit blocked=%s\n", dev->print_blocked());
-   dev->dunlock();
+   dev->Unlock();
    return status;
 }
 

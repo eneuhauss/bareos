@@ -43,6 +43,7 @@ db_log_insert_func p_db_log_insert = NULL;
  *    daemons include this file.
  */
 const char *working_directory = NULL;       /* working directory path stored here */
+const char *assert_msg = (char *)NULL; /* ASSERT2 error message */
 int verbose = 0;                      /* increase User messages */
 int debug_level = 0;                  /* debug level */
 bool dbg_timestamp = false;           /* print timestamp in debug output */

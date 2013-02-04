@@ -138,7 +138,7 @@ void DCR::clear_reserved()
  */
 void DCR::unreserve_device()
 {
-   dev->dlock();
+   dev->Lock();
    lock_volumes();
    if (is_reserved()) {
       clear_reserved();
@@ -157,7 +157,7 @@ void DCR::unreserve_device()
       }
    }
    unlock_volumes();
-   dev->dunlock();
+   dev->Unlock();
 }
 
 /*
@@ -767,7 +767,7 @@ static bool reserve_device_for_read(DCR *dcr)
       return false;
    }
 
-   dev->dlock();
+   dev->Lock();
 
    if (dev->is_device_unmounted()) {
       Dmsg1(dbglvl, "Device %s is BLOCKED due to user unmount.\n", dev->print_name());
@@ -798,7 +798,7 @@ static bool reserve_device_for_read(DCR *dcr)
    ok = true;
 
 bail_out:
-   dev->dunlock();
+   dev->Unlock();
    return ok;
 }
 
@@ -829,7 +829,7 @@ static bool reserve_device_for_append(DCR *dcr, RCTX &rctx)
       return false;
    }
 
-   dev->dlock();
+   dev->Lock();
 
    /* If device is being read, we cannot write it */
    if (dev->can_read()) {
@@ -866,7 +866,7 @@ static bool reserve_device_for_append(DCR *dcr, RCTX &rctx)
    ok = true;
 
 bail_out:
-   dev->dunlock();
+   dev->Unlock();
    return ok;
 }
 

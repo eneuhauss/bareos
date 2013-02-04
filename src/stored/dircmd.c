@@ -451,7 +451,7 @@ static bool do_label(JCR *jcr, bool relabel)
       dcr = find_device(jcr, dev_name, drive);
       if (dcr) {
          dev = dcr->dev;
-         dev->dlock();                 /* Use P to avoid indefinite block */
+         dev->Lock();                 /* Use P to avoid indefinite block */
          if (!dev->is_open() && !dev->is_busy()) {
             Dmsg1(400, "Can %slabel. Device is not open\n", relabel ? "re" : "");
             label_volume_if_ok(dcr, oldname, newname, poolname, slot, relabel);
@@ -466,7 +466,7 @@ static bool do_label(JCR *jcr, bool relabel)
             Dmsg0(400, "Can relabel. device not used\n");
             label_volume_if_ok(dcr, oldname, newname, poolname, slot, relabel);
          }
-         dev->dunlock();
+         dev->Unlock();
          free_dcr(dcr);
       } else {
          dir->fsend(_("3999 Device \"%s\" not found or could not be opened.\n"), dev_name.c_str());
@@ -712,7 +712,7 @@ static bool mount_cmd(JCR *jcr)
       dcr = find_device(jcr, devname, drive);
       if (dcr) {
          dev = dcr->dev;
-         dev->dlock();                 /* Use P to avoid indefinite block */
+         dev->Lock();                  /* Use P to avoid indefinite block */
          Dmsg2(100, "mount cmd blocked=%d must_unload=%d\n", dev->blocked(),
             dev->must_unload());
          switch (dev->blocked()) {         /* device blocked? */
@@ -834,7 +834,7 @@ static bool mount_cmd(JCR *jcr)
             dir->fsend(_("3905 Unknown wait state %d\n"), dev->blocked());
             break;
          }
-         dev->dunlock();
+         dev->Unlock();
          free_dcr(dcr);
       } else {
          dir->fsend(_("3999 Device \"%s\" not found or could not be opened.\n"), devname.c_str());
@@ -862,7 +862,7 @@ static bool unmount_cmd(JCR *jcr)
       dcr = find_device(jcr, devname, drive);
       if (dcr) {
          dev = dcr->dev;
-         dev->dlock();                 /* Use P to avoid indefinite block */
+         dev->Lock();                 /* Use P to avoid indefinite block */
          if (!dev->is_open()) {
             if (!dev->is_busy()) {
                unload_autochanger(dcr, -1);
@@ -926,7 +926,7 @@ static bool unmount_cmd(JCR *jcr)
                   dev->print_name());
             }
          }
-         dev->dunlock();
+         dev->Unlock();
          free_dcr(dcr);
       } else {
          dir->fsend(_("3999 Device \"%s\" not found or could not be opened.\n"), devname.c_str());
@@ -999,7 +999,7 @@ static bool release_cmd(JCR *jcr)
       dcr = find_device(jcr, devname, drive);
       if (dcr) {
          dev = dcr->dev;
-         dev->dlock();                 /* Use P to avoid indefinite block */
+         dev->Lock();                 /* Use P to avoid indefinite block */
          if (!dev->is_open()) {
             if (!dev->is_busy()) {
                unload_autochanger(dcr, -1);
@@ -1037,7 +1037,7 @@ static bool release_cmd(JCR *jcr)
             dir->fsend(_("3022 Device \"%s\" released.\n"),
                dev->print_name());
          }
-         dev->dunlock();
+         dev->Unlock();
          free_dcr(dcr);
       } else {
          dir->fsend(_("3999 Device \"%s\" not found or could not be opened.\n"), devname.c_str());
@@ -1154,7 +1154,7 @@ static bool changer_cmd(JCR *jcr)
       dcr = find_device(jcr, devname, -1);
       if (dcr) {
          dev = dcr->dev;
-         dev->dlock();                 /* Use P to avoid indefinite block */
+         dev->Lock();                 /* Use P to avoid indefinite block */
          if (!dev->device->changer_res) {
             dir->fsend(_("3998 Device \"%s\" is not an autochanger.\n"),
                        dev->print_name());
@@ -1174,7 +1174,7 @@ static bool changer_cmd(JCR *jcr)
                autochanger_cmd(dcr, dir, cmd);
             }
          }
-         dev->dunlock();
+         dev->Unlock();
          free_dcr(dcr);
       } else {
          dir->fsend(_("3999 Device \"%s\" not found or could not be opened.\n"), devname.c_str());
@@ -1204,7 +1204,7 @@ static bool readlabel_cmd(JCR *jcr)
       dcr = find_device(jcr, devname, drive);
       if (dcr) {
          dev = dcr->dev;
-         dev->dlock();                 /* Use P to avoid indefinite block */
+         dev->Lock();                 /* Use P to avoid indefinite block */
          if (!dev->is_open()) {
             read_volume_label(jcr, dcr, dev, Slot);
             dev->close(dcr);
@@ -1216,7 +1216,7 @@ static bool readlabel_cmd(JCR *jcr)
          } else {                     /* device not being used */
             read_volume_label(jcr, dcr, dev, Slot);
          }
-         dev->dunlock();
+         dev->Unlock();
          free_dcr(dcr);
       } else {
          dir->fsend(_("3999 Device \"%s\" not found or could not be opened.\n"), devname.c_str());
