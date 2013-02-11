@@ -1,7 +1,7 @@
 /*
    BAREOS® - Backup Archiving REcovery Open Sourced
 
-   Copyright (C) 1981-2010 Free Software Foundation Europe e.V.
+   Copyright (C) 1981-2012 Free Software Foundation Europe e.V.
              Yes, that is 1981 no error.
    Copyright (C) 2011-2012 Planets Communications B.V.
    Copyright (C) 2013-2013 Bareos GmbH & Co. KG
