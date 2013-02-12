@@ -12643,7 +12643,7 @@ $as_echo_n "checking whether a program can dlopen itself... " >&6; }
 if ${lt_cv_dlopen_self+:} false; then :
   $as_echo_n "(cached) " >&6
 else
-	  if test "$cross_compiling" = yes; then :
+  	  if test "$cross_compiling" = yes; then :
   lt_cv_dlopen_self=cross
 else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
@@ -12749,7 +12749,7 @@ $as_echo_n "checking whether a statically linked program can dlopen itself... " 
 if ${lt_cv_dlopen_self_static+:} false; then :
   $as_echo_n "(cached) " >&6
 else
-	  if test "$cross_compiling" = yes; then :
+  	  if test "$cross_compiling" = yes; then :
   lt_cv_dlopen_self_static=cross
 else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
@@ -22247,7 +22247,7 @@ fi
 
 else
 
-		 ac_fn_c_check_header_mongrel "$LINENO" "/usr/include/readline/readline.h" "ac_cv_header__usr_include_readline_readline_h" "$ac_includes_default"
+	 	 ac_fn_c_check_header_mongrel "$LINENO" "/usr/include/readline/readline.h" "ac_cv_header__usr_include_readline_readline_h" "$ac_includes_default"
 if test "x$ac_cv_header__usr_include_readline_readline_h" = xyes; then :
 
 
@@ -23318,7 +23318,7 @@ if test "$ac_res" != no; then :
 fi
 
 
-working_dir=`eval echo ${prefix}/opt/bacula/working`
+working_dir=`eval echo ${prefix}/var/bareos/working`
 
 # Check whether --with-working-dir was given.
 if test "${with_working_dir+set}" = set; then :
@@ -23407,7 +23407,7 @@ fi
 
 
 
-bsrdir=`eval echo ${prefix}/opt/bacula/bsr`
+bsrdir=`eval echo ${prefix}/var/bareos/working`
 
 # Check whether --with-bsrdir was given.
 if test "${with_bsrdir+set}" = set; then :
@@ -23422,7 +23422,7 @@ fi
 
 
 
-logdir=`eval echo ${prefix}/opt/bacula/log`
+logdir=`eval echo ${prefix}/var/bareos/logs`
 
 # Check whether --with-logdir was given.
 if test "${with_logdir+set}" = set; then :
@@ -29307,7 +29307,7 @@ if test $ac_cv_func_setpgrp_void = yes; then
 $as_echo "#define SETPGRP_VOID 1" >>confdefs.h
 
 fi
-	    # AC_FUNC_FNMATCH    dnl use local version
+ 	    # AC_FUNC_FNMATCH    dnl use local version
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for gettext in -lintl" >&5
 $as_echo_n "checking for gettext in -lintl... " >&6; }
@@ -30154,7 +30154,7 @@ fi
 done
 
 
-				 if test $have_extattr_string_in_libc = no; then
+	 	 	 	 if test $have_extattr_string_in_libc = no; then
 	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for extattr_namespace_to_string extattr_string_to_namespace in -lutil" >&5
 $as_echo_n "checking for extattr_namespace_to_string extattr_string_to_namespace in -lutil... " >&6; }
 if ${ac_cv_lib_util_extattr_namespace_to_string_extattr_string_to_namespace+:} false; then :
@@ -30926,19 +30926,11 @@ osx)
 debian)
    TAPEDRIVE="/dev/nst0"
    PSCMD="ps -e -o pid,command"
-   if test "$DISTNAME" = "ubuntu" ; then
-      PFILES="${PFILES} \
-	 platforms/ubuntu/Makefile \
-	 platforms/ubuntu/bareos-fd \
-	 platforms/ubuntu/bareos-sd \
-	 platforms/ubuntu/bareos-dir"
-   else
-      PFILES="${PFILES} \
+   PFILES="${PFILES} \
 	 platforms/debian/Makefile \
 	 platforms/debian/bareos-fd \
 	 platforms/debian/bareos-sd \
 	 platforms/debian/bareos-dir"
-   fi
   ;;
 freebsd)
    VER=`echo $DISTVER | cut -c 1`
@@ -31082,6 +31074,15 @@ suse)
        platforms/suse/bareos-sd \
        platforms/suse/bareos-dir \
        platforms/suse/bareos"
+  ;;
+ubuntu)
+   TAPEDRIVE="/dev/nst0"
+   PSCMD="ps -e -o pid,command"
+   PFILES="${PFILES} \
+       platforms/ubuntu/Makefile \
+       platforms/ubuntu/bareos-fd \
+       platforms/ubuntu/bareos-sd \
+       platforms/ubuntu/bareos-dir"
   ;;
 unknown)
    TAPEDRIVE="/dev/nst0"
